@@ -1,0 +1,98 @@
+openapi: 3.0.1
+info:
+  title: Property Management Api
+  description: An api that allows management of properties
+  contact:
+    email: blake@email.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about the property api
+  url: http://github.com
+servers:
+  - url: https://api.property.me
+tags:
+  - name: property
+    description: Everything about the properties
+paths:
+  /property:
+    get:
+      tags:
+        - property
+      summary: list all the properties
+      description: returns an array of properties
+      responses:
+        200:
+          description: successful operation
+          headers:
+            X-Total-Item-Count:
+              description: The number of items returned in the request
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/property"
+    head:
+      tags:
+        - property
+      summary: list all the properties
+      description: returns an array of properties
+      responses:
+        200:
+          description: successful operation
+          headers:
+            X-Total-Item-Count:
+              description: The number of items returned in the request
+              schema:
+                type: integer
+  /properties/{propertyReference}:
+    get:
+      tags:
+        - property
+      summary: Find a property by propertyReference
+      description: Returns a single property
+      operationId: getPropertyByReference
+      parameters:
+        - name: propertyReference
+          in: path
+          description: Unique Reference of property to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/property"
+        400:
+          description: Invalid reference supplied
+          content: {}
+        404:
+          description: Property not found
+          content: {}
+components:
+  schemas:
+    property:
+      required:
+        - propertyReference
+        - propertyDescription
+      type: object
+      properties:
+        propertyReference:
+          type: string
+        propertyDescription:
+          type: string
+        description:
+          type: string
+        addressline1:
+          type: string
+        addressline2:
+          type: string
+        addressline3:
+          type: string
+        town:
+          type: string
+        postcode:
+          type: string
