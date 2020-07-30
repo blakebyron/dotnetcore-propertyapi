@@ -17,12 +17,16 @@
     <Folder Include="Infrastructure\MediatR\" />
     <Folder Include="Infrastructure\Swagger\" />
     <Folder Include="Infrastructure\Mvc\" />
+    <Folder Include="Infrastructure\EntityFramework\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MediatR" Version="8.0.2" />
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.6" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Dockerfile" />
@@ -30,5 +34,13 @@
   <ItemGroup>
     <Compile Remove="Infrastructure\Data\EntityFramework\PropertyContext.cs" />
     <Compile Remove="Infrastructure\Data\EntityFramework\PropertyContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Property.Core\Property.Core.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Property.Infrastructure\Property.Infrastructure.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

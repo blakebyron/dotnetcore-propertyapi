@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Property.Infrastructure.Data;
 
 namespace Property.Api.Features.Property
 {
@@ -31,33 +32,25 @@ namespace Property.Api.Features.Property
 
         public class Handler : IRequestHandler<Query, Result>
         {
+            private readonly PropertyContext context;
+
+            public Handler(PropertyContext context)
+            {
+                this.context = context;
+            }
+
             public Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var propertyList = new List<Result>();
-
-                var p1 = new Result()
+                var item = this.context.Properties.SingleOrDefault(f => f.Reference.Reference == request.PropertyReference);
+                Result result = null;
+                if (item !=null)
                 {
-                    PropertyReference = "P001",
-                    AddressLine1 = "1 Our Street",
-                    AddressLine2 = "Somewhere",
-                    AddressLine3 = "Over There",
-                    Town = "Small Town",
-                    Postcode = "AB1"
-                };
-
-                propertyList.Add(p1);
-
-                var p2 = new Result()
-                {
-                    PropertyReference = "P002",
-                    AddressLine1 = "2 The Street",
-                    AddressLine2 = "Nowhere",
-                    Town = "Big Town",
-                    Postcode = "AB2"
-                };
-                propertyList.Add(p2);
-
-                var result = propertyList.SingleOrDefault(f => f.PropertyReference == request.PropertyReference);
+                    result = new Result()
+                    {
+                        PropertyReference = item.Reference.Reference,
+                        PropertyDescription = item.Description
+                    };
+                }
                 return Task.FromResult<Result>(result);
             }
         }

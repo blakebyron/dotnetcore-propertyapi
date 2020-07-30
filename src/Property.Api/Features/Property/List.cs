@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Property.Infrastructure.Data;
 
 namespace Property.Api.Features.Property
 {
@@ -39,34 +41,16 @@ namespace Property.Api.Features.Property
 
         public class Handler : IRequestHandler<Query, Result>
         {
+            private readonly PropertyContext context;
+
+            public Handler(PropertyContext context)
+            {
+                this.context = context;
+            }
             public Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var propertyList = new List<Result.Property>();
-
-                var p1 = new Result.Property()
-                {
-                    PropertyReference = "P001",
-                    AddressLine1 = "1 Our Street",
-                    AddressLine2 = "Somewhere",
-                    AddressLine3 = "Over There",
-                    Town = "Small Town",
-                    Postcode = "AB1"
-                };
-
-                propertyList.Add(p1);
-
-                var p2 = new Result.Property()
-                {
-                    PropertyReference = "P002",
-                    AddressLine1 = "2 The Street",
-                    AddressLine2 = "Nowhere",
-                    Town = "Big Town",
-                    Postcode = "AB2"
-                };
-                propertyList.Add(p2);
-
-                var result = new Result(propertyList);
-
+                var items = this.context.Properties.ToList();
+                var result = new Result(items.Select(f => new Result.Property() { PropertyReference = f.Reference.Reference, PropertyDescription = f.Description}).ToList());
                 return Task.FromResult<Result>(result);
             }
         }
