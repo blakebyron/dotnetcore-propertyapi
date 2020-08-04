@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Property.Infrastructure.Data;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Property.Api.Features.Property
 {
@@ -33,25 +36,19 @@ namespace Property.Api.Features.Property
         public class Handler : IRequestHandler<Query, Result>
         {
             private readonly PropertyContext context;
+            private readonly MapperConfiguration mapperConfiguration;
 
-            public Handler(PropertyContext context)
+            public Handler(PropertyContext context, MapperConfiguration mapperConfiguration)
             {
                 this.context = context;
+                this.mapperConfiguration = mapperConfiguration;
             }
 
-            public Task<Result> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var item = this.context.Properties.SingleOrDefault(f => f.Reference.Reference == request.PropertyReference);
-                Result result = null;
-                if (item !=null)
-                {
-                    result = new Result()
-                    {
-                        PropertyReference = item.Reference.Reference,
-                        PropertyDescription = item.Description
-                    };
-                }
-                return Task.FromResult<Result>(result);
+                Result result = await this.context.Properties.AsNoTracking().ProjectTo<Result>(mapperConfiguration).SingleOrDefaultAsync(f => f.PropertyReference == request.PropertyReference);
+
+                return result;
             }
         }
     }

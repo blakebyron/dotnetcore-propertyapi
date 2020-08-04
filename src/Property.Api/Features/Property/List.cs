@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Property.Infrastructure.Data;
 
 namespace Property.Api.Features.Property
@@ -42,16 +45,22 @@ namespace Property.Api.Features.Property
         public class Handler : IRequestHandler<Query, Result>
         {
             private readonly PropertyContext context;
+            private readonly MapperConfiguration mapperConfiguration;
 
-            public Handler(PropertyContext context)
+            public Handler(PropertyContext context, MapperConfiguration mapperConfiguration)
             {
                 this.context = context;
+                this.mapperConfiguration = mapperConfiguration;
             }
-            public Task<Result> Handle(Query request, CancellationToken cancellationToken)
+
+            public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var items = this.context.Properties.ToList();
-                var result = new Result(items.Select(f => new Result.Property() { PropertyReference = f.Reference.Reference, PropertyDescription = f.Description}).ToList());
-                return Task.FromResult<Result>(result);
+                //define the order by
+                Func<IQueryable<Core.Property>, IQueryable<Core.Property>> orderby = f => f.OrderBy(f => f.Reference.Reference);
+                //query the the properties ordering the results then map to specific class
+                var items = await orderby(this.context.Properties.AsNoTracking()).ProjectTo<Result.Property>(mapperConfiguration).ToListAsync();
+                var result = new Result(items);
+                return result;
             }
         }
     }

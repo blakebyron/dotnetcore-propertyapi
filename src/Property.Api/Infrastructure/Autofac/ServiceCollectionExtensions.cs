@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac;
+using Property.Api.Infrastructure.AutoMapper;
 using Property.Api.Infrastructure.MediatR;
 
 namespace Property.Api.Infrastructure.Autofac
@@ -15,6 +16,7 @@ namespace Property.Api.Infrastructure.Autofac
         {
             var asm = typeof(Startup).Assembly;
             builder.RegisterModule(new MediatRModule(asm));
+            builder.RegisterModule(new AutoMapperModule(asm));
         }
     }
 }
