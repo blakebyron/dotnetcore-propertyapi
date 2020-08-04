@@ -23,12 +23,12 @@ namespace Property.Api.Infrastructure.EntityFramework
             };
 
             services.AddEntityFrameworkInMemoryDatabase()
-                       .AddDbContext<PropertyContext>(options =>
-                       {
-                           options.UseInMemoryDatabase("PropertyDb");
-                       },
-                           ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
-                       );
+                .AddDbContext<PropertyContext>(options =>
+                {
+                    options.UseInMemoryDatabase("PropertyDb");
+                },
+                ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+            );
 
             return services;
         }
