@@ -19,6 +19,8 @@ namespace Property.Api.Infrastructure.Swagger
                     Version = "v1"
                 });
 
+                setupAction.DocumentFilter<HealthCheckEndpointDocumentFilter>();
+
                 //Find the xml file generated at build time containing endpoint documentaton
                 //load it to display information in swagger ui
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

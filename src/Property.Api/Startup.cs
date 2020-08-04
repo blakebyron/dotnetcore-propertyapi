@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Property.Api.Infrastructure.Autofac;
+using Property.Api.Infrastructure.EntityFramework;
 using Property.Api.Infrastructure.Mvc;
 using Property.Api.Infrastructure.Swagger;
 
@@ -31,6 +32,8 @@ namespace Property.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMvc();
+
+            services.AddCustomDbContext(Configuration, typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddHealthChecks();
 

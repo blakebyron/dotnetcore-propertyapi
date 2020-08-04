@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Property.Infrastructure.Data;
 
 namespace Property.Api
 {
@@ -14,7 +16,7 @@ namespace Property.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().SeedData().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -27,5 +29,35 @@ namespace Property.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+    }
+
+
+    public static class IHostBuilderExtensions
+    {
+        /// <summary>
+        /// Create some sample data
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public static IHost SeedData(this IHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetService<PropertyContext>();
+
+                Int32 itemsToAdd = 50;
+                for (int i = 1; i <= itemsToAdd; i++)
+                {
+                    var pr = new Property.Core.PropertyReference($"P{ i.ToString().PadLeft(3,'0') }");
+                    var p = Property.Core.Property.CreateWithDescription(pr, $"My Property {i}");
+                    context.Properties.Add(p);
+                }
+
+                context.SaveChanges();
+            }
+
+            return host;
+        }
     }
 }

@@ -31,6 +31,8 @@ namespace Property.Api.Infrastructure.MediatR
                 return t => c.Resolve(t);
             });
 
+
+            //register all the request handlers
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.GetTypeInfo()
                     .ImplementedInterfaces.Any(
@@ -38,6 +40,7 @@ namespace Property.Api.Infrastructure.MediatR
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
+            //register all the notification handlers
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.GetTypeInfo()
                 .ImplementedInterfaces.Any(
