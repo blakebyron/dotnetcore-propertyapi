@@ -18,6 +18,7 @@
     <Folder Include="Infrastructure\Swagger\" />
     <Folder Include="Infrastructure\Mvc\" />
     <Folder Include="Infrastructure\EntityFramework\" />
+    <Folder Include="Infrastructure\AutoMapper\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MediatR" Version="8.0.2" />
@@ -27,6 +28,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.6" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Dockerfile" />
@@ -42,5 +44,11 @@
     <ProjectReference Include="..\Property.Infrastructure\Property.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="mono_crash.42f6ec106.0.json" />
+    <Content Remove="mono_crash.42f6ec106.0.json" />
+    <Content Remove="mono_crash.42f6ec106.1.json" />
+    <Content Remove="mono_crash.42f6ec106.1.json" />
   </ItemGroup>
 </Project>
