@@ -9,13 +9,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Property.Infrastructure.Data;
+// Additional required namespaces
+using Serilog;
 
 namespace Property.Api
 {
     public class Program
     {
+        public static readonly string Namespace = typeof(Program).Namespace;
+        public static readonly string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+
         public static void Main(string[] args)
         {
+            Log.Logger = CreateSerilogLogger();
+
             CreateHostBuilder(args).Build().SeedData().Run();
         }
 
@@ -25,10 +32,22 @@ namespace Property.Api
                 // The UseServiceProviderFactory call attaches the
                 // Autofac provider to the generic hosting mechanism.
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static Serilog.ILogger CreateSerilogLogger()
+        {
+            return new LoggerConfiguration()
+                //.MinimumLevel.Verbose()
+                .Enrich.WithProperty("ApplicationContext", AppName)
+                //.Enrich.FromLogContext()
+                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+        }
+
     }
 
 
