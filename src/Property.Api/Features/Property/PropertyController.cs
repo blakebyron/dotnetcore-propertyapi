@@ -45,5 +45,12 @@ namespace Property.Api.Features.Property
 
             return Ok(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateWithReferenceAndDescription.Command command)
+        {
+            var response = await mediator.Send(command);
+            return CreatedAtAction(nameof(Detail), new { id = response }, null);
+        }
     }
 }
