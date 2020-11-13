@@ -44,7 +44,7 @@ namespace Property.Api
                 //.MinimumLevel.Verbose()
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 //.Enrich.FromLogContext()
-                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("log.log", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
 
