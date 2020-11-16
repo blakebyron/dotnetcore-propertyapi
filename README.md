@@ -1,5 +1,7 @@
 # Property Api
 
+![CI](https://github.com/blakebyron/dotnetcore-propertyapi/workflows/CI/badge.svg)
+
 This Api will allow basic searching and retrieval of property information. Sample data will be created for testing.
 
 ## Description
