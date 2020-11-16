@@ -48,6 +48,7 @@ namespace Property.Api.Infrastructure.MediatR
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
             base.Load(builder);
         }

@@ -4,18 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Property.Infrastructure.Data;
+// Additional required namespaces
+using Serilog;
 
 namespace Property.Api
 {
     public class Program
     {
+        public static readonly string Namespace = typeof(Program).Namespace;
+        public static readonly string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+
         public static void Main(string[] args)
         {
+            Log.Logger = CreateSerilogLogger();
+
             CreateHostBuilder(args).Build().SeedData().Run();
         }
 
@@ -25,10 +33,22 @@ namespace Property.Api
                 // The UseServiceProviderFactory call attaches the
                 // Autofac provider to the generic hosting mechanism.
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static Serilog.ILogger CreateSerilogLogger()
+        {
+            return new LoggerConfiguration()
+                //.MinimumLevel.Verbose()
+                .Enrich.WithProperty("ApplicationContext", AppName)
+                //.Enrich.FromLogContext()
+                .WriteTo.File("log.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+        }
+
     }
 
 
@@ -45,6 +65,11 @@ namespace Property.Api
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetService<PropertyContext>();
+
+                if (context.Database.IsSqlServer())
+                {
+                    context.Database.Migrate();
+                }
 
                 Int32 itemsToAdd = 50;
                 for (int i = 1; i <= itemsToAdd; i++)

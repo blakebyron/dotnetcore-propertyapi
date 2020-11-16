@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <DockerComposeProjectPath>../../docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>5cda1d04-76a7-4661-b7a9-eff9f9052144</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -24,18 +25,20 @@
     <PackageReference Include="MediatR" Version="8.0.2" />
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.6" />
     <PackageReference Include="AutoMapper" Version="10.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Dockerfile" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Infrastructure\Data\EntityFramework\PropertyContext.cs" />
     <Compile Remove="Infrastructure\Data\EntityFramework\PropertyContext.cs" />
+    <Compile Remove="Infrastructure\Extensions\GenericTypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Property.Core\Property.Core.csproj">
@@ -50,5 +53,9 @@
     <Content Remove="mono_crash.42f6ec106.0.json" />
     <Content Remove="mono_crash.42f6ec106.1.json" />
     <Content Remove="mono_crash.42f6ec106.1.json" />
+    <Content Remove="mono_crash.42f6ec106.2.json" />
+    <Content Remove="mono_crash.4e2fd08fc.0.json" />
+    <Content Remove="mono_crash.42f6ec106.2.json" />
+    <Content Remove="mono_crash.4e2fd08fc.0.json" />
   </ItemGroup>
 </Project>

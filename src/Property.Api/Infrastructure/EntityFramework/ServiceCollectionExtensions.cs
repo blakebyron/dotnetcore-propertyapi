@@ -22,10 +22,18 @@ namespace Property.Api.Infrastructure.EntityFramework
                 throw new ArgumentNullException(nameof(assembley));
             };
 
-            services.AddEntityFrameworkInMemoryDatabase()
+            //services.AddEntityFrameworkInMemoryDatabase()
+            //    .AddDbContext<PropertyContext>(options =>
+            //    {
+            //        options.UseInMemoryDatabase("PropertyDb");
+            //    },
+            //    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+            //);
+            services
                 .AddDbContext<PropertyContext>(options =>
                 {
-                    options.UseInMemoryDatabase("PropertyDb");
+                    string tConnectionString = configuration.GetConnectionString("ConnectionString");
+                    options.UseSqlServer(tConnectionString);
                 },
                 ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
