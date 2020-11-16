@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -64,6 +65,11 @@ namespace Property.Api
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetService<PropertyContext>();
+
+                if (context.Database.IsSqlServer())
+                {
+                    context.Database.Migrate();
+                }
 
                 Int32 itemsToAdd = 50;
                 for (int i = 1; i <= itemsToAdd; i++)

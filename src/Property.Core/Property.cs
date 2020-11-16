@@ -4,6 +4,7 @@ namespace Property.Core
 {
     public class Property
     {
+        public Int32 ID { get; set; }
         public PropertyReference Reference { get; private set; }
         public string Description { get; private set; }
 
