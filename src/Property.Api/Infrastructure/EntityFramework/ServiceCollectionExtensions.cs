@@ -21,22 +21,22 @@ namespace Property.Api.Infrastructure.EntityFramework
             {
                 throw new ArgumentNullException(nameof(assembley));
             };
-
-            //services.AddEntityFrameworkInMemoryDatabase()
-            //    .AddDbContext<PropertyContext>(options =>
-            //    {
-            //        options.UseInMemoryDatabase("PropertyDb");
-            //    },
-            //    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
-            //);
-            services
+            //ToDo: Made this easy to toggle to run integration tests more easily as a temporary measure
+            services.AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<PropertyContext>(options =>
                 {
-                    string tConnectionString = configuration.GetConnectionString("ConnectionString");
-                    options.UseSqlServer(tConnectionString);
+                    options.UseInMemoryDatabase("PropertyDb");
                 },
                 ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
+            //services
+            //    .AddDbContext<PropertyContext>(options =>
+            //    {
+            //        string tConnectionString = configuration.GetConnectionString("ConnectionString");
+            //        options.UseSqlServer(tConnectionString);
+            //    },
+            //    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+            //);
 
             return services;
         }

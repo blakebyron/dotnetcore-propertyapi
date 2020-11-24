@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using Property.Infrastructure.Data;
 
@@ -16,6 +17,14 @@ namespace Property.Api.Features.Property
         {
             public string PropertyReference { get; set; }
             public string PropertyDescription { get; set; }
+        }
+
+        public class Validator : AbstractValidator<Command>
+        {
+            public Validator()
+            {
+                RuleFor(p => p.PropertyReference).NotNull().Length(1, 250).Must(p => p.StartsWith("P"));
+            }
         }
 
         public class CommandHandler : IRequestHandler<Command, Int32>

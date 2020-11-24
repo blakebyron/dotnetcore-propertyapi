@@ -13,15 +13,13 @@
   <ItemGroup>
     <Folder Include="Features\" />
     <Folder Include="Features\Property\" />
-    <Folder Include="Infrastructure\" />
     <Folder Include="Infrastructure\Autofac\" />
-    <Folder Include="Infrastructure\MediatR\" />
     <Folder Include="Infrastructure\Swagger\" />
-    <Folder Include="Infrastructure\Mvc\" />
     <Folder Include="Infrastructure\EntityFramework\" />
     <Folder Include="Infrastructure\AutoMapper\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
     <PackageReference Include="MediatR" Version="8.0.2" />
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
