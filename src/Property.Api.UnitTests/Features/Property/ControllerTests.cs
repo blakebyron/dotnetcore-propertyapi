@@ -80,5 +80,23 @@ namespace Property.Api.UnitTests.Features.Property
             Assert.NotNull(actionResult);
             Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.NotFound);
         }
+
+        [Fact]
+        public async Task Given_A_Request_To_Create_An_Individual_Property_When_ThePropertyIsValid_Then_ReturnCreated()
+        {
+            //Arrange
+            string propertyReference = "P009";
+            string propertyDescription = "This ia a test description";
+
+            mediatorMock.Setup(x => x.Send(It.IsAny<CreateWithReferenceAndDescription.Command>(), default(CancellationToken))).Returns(Task.FromResult<Int32>(0));
+
+            //Act
+            var sut = new PropertyController(mediatorMock.Object);
+            var actionResult = await sut.Create(new CreateWithReferenceAndDescription.Command() { PropertyReference = propertyReference, PropertyDescription = propertyDescription }) as CreatedAtActionResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.Created);
+        }
     }
 }
