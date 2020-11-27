@@ -25,7 +25,7 @@ namespace Property.Api.Features.Property
         /// </summary>
         /// <returns>A list of properties containing the ID and description</returns>
         [HttpGet(Name = nameof(List))]
-        [ProducesResponseType(typeof(IEnumerable<List.Result.Property>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> List(List.Query query)
         {
             var model = await mediator.Send(query);
@@ -38,7 +38,8 @@ namespace Property.Api.Features.Property
         /// <param name="query">Property Reference parameter</param>
         /// <returns>A property containing the ID and description</returns>
         [HttpGet("{PropertyReference}", Name = nameof(Detail))]
-        [ProducesResponseType(typeof(Detail.Result), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(Detail.Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Detail(Detail.Query query)
         {

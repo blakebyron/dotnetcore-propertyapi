@@ -17,7 +17,11 @@ namespace Property.Api.IntegrationTests
             .ConfigureServices(service => service.AddAutofac())
             .ConfigureAppConfiguration(cd =>
             {
-                cd.AddJsonFile("appsettings.json", optional: false)
+                var settings = new Dictionary<string, string>
+                {
+                    {"PropertyApiSettings:IsInMemoryDataseEnabled", "true"},
+                };
+                cd.AddInMemoryCollection(settings)
                 .AddEnvironmentVariables();
             })
             .UseStartup<Startup>());

@@ -35,7 +35,7 @@ namespace Property.Api
 
             services.AddCustomMvc(asm);
 
-            services.AddCustomDbContext(Configuration, asm);
+            //services.AddCustomDbContext(Configuration, asm);
 
             services.AddHealthChecks();
 
@@ -51,7 +51,7 @@ namespace Property.Api
         {
             // Add things to the Autofac ContainerBuilder.
             // Register your own things directly with Autofac, like:
-            builder.RegisterApplicationModules();
+            builder.RegisterApplicationModules(this.Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

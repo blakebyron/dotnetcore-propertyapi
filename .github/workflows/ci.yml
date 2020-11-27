@@ -25,4 +25,4 @@ jobs:
       working-directory: src/Property.Api
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-      working-directory: src/Property.Api
+      working-directory: src/Property.Api.UnitTests
