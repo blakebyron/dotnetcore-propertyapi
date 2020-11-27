@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using FluentValidation;
 using MediatR;
 using af = Autofac.Module;
 
@@ -48,7 +49,15 @@ namespace Property.Api.Infrastructure.MediatR
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
+
+            // Register the Command's Validators (Validators based on FluentValidation library)
+            builder
+                .RegisterAssemblyTypes(assembly)
+                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                .AsImplementedInterfaces();
+
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+            builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
             base.Load(builder);
         }
