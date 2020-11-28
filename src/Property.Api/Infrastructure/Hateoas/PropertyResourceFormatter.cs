@@ -27,6 +27,12 @@ namespace Property.Api.Infrastructure.Hateoas
 
         }
 
+        public override bool CanWriteResult(OutputFormatterCanWriteContext context)
+        {
+            //Consider also adding checked for the type of objects.https://docs.microsoft.com/en-us/aspnet/core/web-api/advanced/custom-formatters?view=aspnetcore-5.0
+            return context.HttpContext.Request.Headers["Content-Type"] == MediatTypeName;
+        }
+
         public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context)
         {
             //Load all the servies needed
