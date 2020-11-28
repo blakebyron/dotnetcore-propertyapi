@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Property.Api.Infrastructure.Hateoas;
 
 namespace Property.Api.Infrastructure.Mvc
 {
@@ -14,6 +15,7 @@ namespace Property.Api.Infrastructure.Mvc
                 //enabling return of 406 if unsupported media type requested
                 controllers.ReturnHttpNotAcceptable = true;
                 controllers.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                controllers.OutputFormatters.Insert(0,new PropertyResourceFormatter());
             })
             .ConfigureApiBehaviorOptions(options =>
             {
