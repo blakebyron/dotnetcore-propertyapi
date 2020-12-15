@@ -17,6 +17,7 @@
     <Folder Include="Infrastructure\Swagger\" />
     <Folder Include="Infrastructure\EntityFramework\" />
     <Folder Include="Infrastructure\AutoMapper\" />
+    <Folder Include="Features\PropertyCollection\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />

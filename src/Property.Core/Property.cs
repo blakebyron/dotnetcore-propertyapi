@@ -15,7 +15,7 @@ namespace Property.Core
 
         protected Property(PropertyReference reference, string description)
         {
-            this.Reference = reference;
+            this.Reference = reference; 
             this.Description = description;
         }
 

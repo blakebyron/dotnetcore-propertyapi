@@ -25,4 +25,7 @@
     <ProjectReference Include="..\Property.Api\Property.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\PropertyCollection\" />
+  </ItemGroup>
 </Project>
