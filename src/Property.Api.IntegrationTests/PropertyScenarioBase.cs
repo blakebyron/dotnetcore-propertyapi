@@ -20,6 +20,7 @@ namespace Property.Api.IntegrationTests
                 var settings = new Dictionary<string, string>
                 {
                     {"PropertyApiSettings:IsInMemoryDataseEnabled", "true"},
+                    {"PropertyApiSettings:IsInMemoryDummyDataRequired", "true"},
                 };
                 cd.AddInMemoryCollection(settings)
                 .AddEnvironmentVariables();

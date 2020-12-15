@@ -15,6 +15,7 @@ namespace Property.Api.Features.PropertyCollection
     {
         public class Query : IRequest<Result>
         {
+            public IEnumerable<string> Properties { get; internal set; }
         }
 
 
@@ -58,7 +59,8 @@ namespace Property.Api.Features.PropertyCollection
                 //define the order by
                 Func<IQueryable<Core.Property>, IQueryable<Core.Property>> orderby = f => f.OrderBy(f => f.Reference.Reference);
                 //query the the properties ordering the results then map to specific class
-                var items = await orderby(this.context.Properties.AsNoTracking()).ProjectTo<Result.Property>(mapperConfiguration).ToListAsync();
+                var itemsToQuery = request.Properties.ToList();
+                var items = await orderby(this.context.Properties.Where(f=> itemsToQuery.Contains(f.Reference.Reference)).AsNoTracking()).ProjectTo<Result.Property>(mapperConfiguration).ToListAsync();
                 var result = new Result(items);
                 return result;
             }

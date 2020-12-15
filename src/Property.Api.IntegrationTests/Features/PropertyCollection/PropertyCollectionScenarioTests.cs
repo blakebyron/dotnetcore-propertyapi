@@ -34,5 +34,18 @@ namespace Property.Api.IntegrationTests.Features.PropertyCollection
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             }
         }
+
+        [Fact]
+        //relies on test data being created when correct parameters are passed to
+        public async Task get_multiple_properties_and_response_ok_status()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync($"api/propertycollection/(P010,P011)");
+
+                response.EnsureSuccessStatusCode();
+            }
+        }
     }
 }

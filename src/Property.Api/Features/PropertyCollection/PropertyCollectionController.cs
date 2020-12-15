@@ -31,7 +31,7 @@ namespace Property.Api.Features.PropertyCollection
                 return BadRequest();
             }
 
-            var query = new ListByPropertyReference.Query() {  };
+            var query = new ListByPropertyReference.Query() { Properties = propertyreferences };
             var model = await mediator.Send(query);
 
 
