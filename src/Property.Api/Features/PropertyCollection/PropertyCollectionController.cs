@@ -7,11 +7,14 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Property.Api.Infrastructure.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 
 namespace Property.Api.Features.PropertyCollection
 {
     [ApiController]
     [Route(Constants.FeatureRouteName)]
+    [FeatureGate(Constants.PropertyCollectionResourceName)]
+
     public class PropertyCollectionController: ControllerBase
     {
         private readonly IMediator mediator;

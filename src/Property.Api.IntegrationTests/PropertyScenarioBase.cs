@@ -13,15 +13,26 @@ namespace Property.Api.IntegrationTests
     {
         public TestServer CreateServer()
         {
+            return CreateServer(true);
+        }
+
+        public TestServer CreateServer(bool IsPropertyCollectionEnabled)
+        {
+            var settings = new Dictionary<string, string>
+            {
+                {"PropertyApiSettings:IsInMemoryDataseEnabled", "true"},
+                {"PropertyApiSettings:IsInMemoryDummyDataRequired", "true"},
+                {"FeatureManagement:IsPropertyCollectionResourceEnabled", IsPropertyCollectionEnabled.ToString()},
+            };
+            return CreateServer(settings);
+        }
+
+        public TestServer CreateServer(Dictionary<string, string> settings)
+        {
             var server = new TestServer(new WebHostBuilder()
             .ConfigureServices(service => service.AddAutofac())
             .ConfigureAppConfiguration(cd =>
             {
-                var settings = new Dictionary<string, string>
-                {
-                    {"PropertyApiSettings:IsInMemoryDataseEnabled", "true"},
-                    {"PropertyApiSettings:IsInMemoryDummyDataRequired", "true"},
-                };
                 cd.AddInMemoryCollection(settings)
                 .AddEnvironmentVariables();
             })
