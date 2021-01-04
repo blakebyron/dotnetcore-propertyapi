@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.FeatureManagement;
 using Property.Api.Infrastructure.Autofac;
 using Property.Api.Infrastructure.EntityFramework;
 using Property.Api.Infrastructure.Mvc;
@@ -40,6 +41,8 @@ namespace Property.Api
             services.AddHealthChecks();
 
             services.AddSwagger();
+
+            services.AddFeatureManagement();
         }
 
         // ConfigureContainer is where you can register things directly
