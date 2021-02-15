@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Property.Api.Features.Property;
@@ -98,5 +99,7 @@ namespace Property.Api.UnitTests.Features.Property
             Assert.NotNull(actionResult);
             Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.Created);
         }
+
+
     }
 }
