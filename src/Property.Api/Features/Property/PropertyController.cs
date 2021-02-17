@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Property.Api.Features.Property
@@ -10,7 +11,7 @@ namespace Property.Api.Features.Property
     [ApiController]
     [Route(Constants.FeatureRouteName)]
     //Use controller base as we have no need for rendering views
-    public class PropertyController:ControllerBase
+    public class PropertyController : ControllerBase
     {
         private readonly IMediator mediator;
 
@@ -60,7 +61,7 @@ namespace Property.Api.Features.Property
         [HttpPost(Name = nameof(Create))]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Create([FromBody]CreateWithReferenceAndDescription.Command command)
+        public async Task<IActionResult> Create([FromBody] CreateWithReferenceAndDescription.Command command)
         {
             var response = await mediator.Send(command);
             return CreatedAtAction(nameof(Detail), new { PropertyReference = command.PropertyReference }, null);
@@ -70,11 +71,19 @@ namespace Property.Api.Features.Property
         /// Obtain information about the http options
         /// </summary>
         /// <returns></returns>
-        [HttpOptions]
-        public IActionResult GetPropertyOptions()
-        {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
-            return Ok();
+        //[HttpOptions]
+        //public IActionResult GetPropertyOptions()
+        //{
+        //    Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+        //    return Ok();
+        //}
+
+        [HttpPatch("{PropertyReference}")]
+        public async Task<IActionResult> PartialPropertyUpdate(string PropertyReference, [FromBody] JsonPatchDocument<PropertyPatchModel> patchDocument)
+         {
+            var command = new Update.Command(PropertyReference, patchDocument);
+            var result = await mediator.Send(command);
+            return result != null ? (IActionResult)Ok(result) : NotFound();
         }
     }
 }

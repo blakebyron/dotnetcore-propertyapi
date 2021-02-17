@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
+using Property.Api.Features.Property;
 using Xunit;
 
 namespace Property.Api.IntegrationTests.Features.Property
@@ -64,6 +66,39 @@ namespace Property.Api.IntegrationTests.Features.Property
                     .PostAsync(CreateProperty, content);
 
                 Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            }
+        }
+
+
+        [Fact]
+        public async Task update_individual_property_description_success()
+        {
+            var property = _propertyBuilder
+                    .WithTestValues()
+                    .Build();
+
+            string jsonContenxt = JsonSerializer.Serialize(property);
+
+            using (var server = CreateServer())
+            {
+                var content = new StringContent(jsonContenxt, UTF8Encoding.UTF8, "application/json");
+                var response = await server.CreateClient()
+                    .PostAsync(CreateProperty, content);
+
+                Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+
+                var patchDoc = new JsonPatchDocument<PropertyPatchModel>();
+                patchDoc.Add(x => x.PropertyDescription, "The test new description");
+
+                string patchJsonContenxt = JsonSerializer.Serialize(patchDoc.Operations);
+
+                var patchContent = new StringContent(patchJsonContenxt, UTF8Encoding.UTF8, "application/json");
+
+                var patchResponse = await server.CreateClient()
+                    .PatchAsync(response.Headers.Location, patchContent);
+                Assert.Equal(HttpStatusCode.OK, patchResponse.StatusCode);
+
             }
         }
     }

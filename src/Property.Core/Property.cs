@@ -23,6 +23,15 @@ namespace Property.Core
         {
             return new Property(reference, description);
         }
+
+        public void ChangeDescription(string propertyDescription)
+        {
+            if (!this.Description.Equals(propertyDescription))
+            {
+                this.Description = propertyDescription;
+                //ToDo Raise event here
+            }
+        }
     }
 
     public class PropertyReference

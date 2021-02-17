@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Property.Api.Features.Property;
@@ -98,5 +99,40 @@ namespace Property.Api.UnitTests.Features.Property
             Assert.NotNull(actionResult);
             Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.Created);
         }
+
+        [Fact]  
+        public async Task Given_A_Request_To_Update_An_Individual_Property_When_ThePropertyExists_Then_ReturnOK()
+        {
+            string propertyReference = "P009";
+
+            mediatorMock.Setup(x => x.Send(It.IsAny<Update.Command>(), default(CancellationToken))).Returns(Task.FromResult<Update.Result>(new Update.Result()));
+
+
+            //Act
+            var sut = new PropertyController(mediatorMock.Object);
+            var actionResult = await sut.PartialPropertyUpdate(propertyReference, new JsonPatchDocument<PropertyPatchModel>()) as OkObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task Given_A_Request_To_Update_An_Individual_Property_When_THePropertyDoesNotExist_Then_ReturnNotFound()
+        {
+            //Arrange
+            string propertyReference = "P009";
+
+            mediatorMock.Setup(x => x.Send(It.IsAny<Update.Command>(), default(CancellationToken))).Returns(Task.FromResult<Update.Result>(null));
+
+            //Act
+            var sut = new PropertyController(mediatorMock.Object);
+            var actionResult = await sut.PartialPropertyUpdate(propertyReference, new JsonPatchDocument<PropertyPatchModel>()) as NotFoundResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (Int32)System.Net.HttpStatusCode.NotFound);
+        }
+
     }
 }
