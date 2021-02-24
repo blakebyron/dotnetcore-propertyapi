@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using Property.Core.ValueObjects;
 using Property.Infrastructure.Data;
 
 namespace Property.Api.Features.PropertyCollection
@@ -45,7 +46,7 @@ namespace Property.Api.Features.PropertyCollection
             {
                 foreach (var item in request.Properties)
                 {
-                    var pr = new Core.PropertyReference(item.PropertyReference);
+                    var pr = new PropertyReference(item.PropertyReference);
                     var p = Core.Property.CreateWithDescription(pr, item.PropertyDescription);
                     this.context.Properties.Add(p);
                 }

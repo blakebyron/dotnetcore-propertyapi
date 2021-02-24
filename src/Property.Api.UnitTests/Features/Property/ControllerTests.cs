@@ -89,7 +89,7 @@ namespace Property.Api.UnitTests.Features.Property
             string propertyReference = "P009";
             string propertyDescription = "This ia a test description";
 
-            mediatorMock.Setup(x => x.Send(It.IsAny<CreateWithReferenceAndDescription.Command>(), default(CancellationToken))).Returns(Task.FromResult<Int32>(0));
+            mediatorMock.Setup(x => x.Send(It.IsAny<CreateWithReferenceAndDescription.Command>(), default(CancellationToken))).Returns(Task.FromResult<Guid>(Guid.Empty));
 
             //Act
             var sut = new PropertyController(mediatorMock.Object);

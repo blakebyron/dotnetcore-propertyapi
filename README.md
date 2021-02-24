@@ -28,7 +28,7 @@ The purpose of this api is to combine a number of design concepts into an applic
 As the goal of this Api is to focus on desing concepts the number of projects being kept to the minimum.
 
 - Property.Api: Main application containing the majority of the code
-- Property.Domain: Simplified domain objects
+- Property.Core: Simplified domain objects
 - Property.Api.UnitTests: Testing isolated components
 - Property.Api.IntegrationTests: Testing multiple components in combination
 

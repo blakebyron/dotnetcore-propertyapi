@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Property.Core.ValueObjects;
 using Property.Infrastructure.Data;
 // Additional required namespaces
 using Serilog;
@@ -74,7 +75,7 @@ namespace Property.Api
                 Int32 itemsToAdd = 50;
                 for (int i = 1; i <= itemsToAdd; i++)
                 {
-                    var pr = new Property.Core.PropertyReference($"P{ i.ToString().PadLeft(3,'0') }");
+                    var pr = new PropertyReference($"P{ i.ToString().PadLeft(3,'0') }");
                     var p = Property.Core.Property.CreateWithDescription(pr, $"My Property {i}");
                     context.Properties.Add(p);
                 }

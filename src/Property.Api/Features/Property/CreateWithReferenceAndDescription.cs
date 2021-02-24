@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using pc = Property.Core;
+using Property.Core.ValueObjects;
 using Property.Infrastructure.Data;
 
 namespace Property.Api.Features.Property
@@ -13,7 +15,7 @@ namespace Property.Api.Features.Property
         {
         }
 
-        public class Command : IRequest<int>
+        public class Command : IRequest<Guid>
         {
             public string PropertyReference { get; set; }
             public string PropertyDescription { get; set; }
@@ -27,7 +29,7 @@ namespace Property.Api.Features.Property
             }
         }
 
-        public class CommandHandler : IRequestHandler<Command, Int32>
+        public class CommandHandler : IRequestHandler<Command, Guid>
         {
             private readonly PropertyContext context;
 
@@ -36,13 +38,14 @@ namespace Property.Api.Features.Property
                 this.context = propertyContext;
             }
 
-            public async Task<int> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
             {
-                var pr = new Core.PropertyReference(request.PropertyReference);
-                var p = Core.Property.CreateWithDescription(pr,request.PropertyDescription);
+                var pr = new PropertyReference(request.PropertyReference);
+                var p = pc.Property.CreateWithDescription(pr,request.PropertyDescription);
 
                 this.context.Properties.Add(p);
-                return await context.SaveChangesAsync();
+                await context.SaveEntityBaseAsync(cancellationToken);
+                return p.ID;
             }
         }
     }

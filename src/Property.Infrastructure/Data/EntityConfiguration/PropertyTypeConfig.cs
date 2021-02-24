@@ -22,6 +22,16 @@ namespace Property.Infrastructure.Data.EntityConfiguration
                 .HasColumnName("PropertyReference")
                 .HasMaxLength(PropertyReferenceMaxFieldLength)
                 .IsRequired();
+            //builder.OwnsOne(x => x.UDPRN)
+            //    .Property(x => x.UDPRN)
+            //    .HasColumnName("UDPRN")
+            //    .HasMaxLength(PropertyReferenceMaxFieldLength)
+            //    .IsRequired();
+            //builder.OwnsOne(x => x.UPRN)
+            //    .Property(x => x.UPRN)
+            //    .HasColumnName("UPRN")
+            //    .HasMaxLength(PropertyReferenceMaxFieldLength)
+            //    .IsRequired();
 
         }
     }

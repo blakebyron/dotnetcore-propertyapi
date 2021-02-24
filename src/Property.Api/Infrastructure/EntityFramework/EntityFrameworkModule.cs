@@ -5,6 +5,8 @@ using Property.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using af = Autofac.Module;
 using System.Collections.Generic;
+using Property.Core.ValueObjects;
+using MediatR;
 
 namespace Property.Api.Infrastructure.EntityFramework
 {
@@ -49,7 +51,8 @@ namespace Property.Api.Infrastructure.EntityFramework
 
             builder.Register<PropertyContext>(ctx =>
             {
-                return new PropertyContext(optionsBuilder.Options);
+                var m = ctx.Resolve<IMediator>();
+                return new PropertyContext(optionsBuilder.Options,m);
             }).InstancePerLifetimeScope();
 
             base.Load(builder);
@@ -66,11 +69,11 @@ namespace Property.Api.Infrastructure.EntityFramework
         {
             return new List<Core.Property>()
             {
-                Core.Property.CreateWithDescription(new Core.PropertyReference("P010"),"Description for Property P010"),
-                Core.Property.CreateWithDescription(new Core.PropertyReference("P011"),"Description for Property P011"),
-                Core.Property.CreateWithDescription(new Core.PropertyReference("P012"),"Description for Property P012"),
-                Core.Property.CreateWithDescription(new Core.PropertyReference("P013"),"Description for Property P013"),
-                Core.Property.CreateWithDescription(new Core.PropertyReference("P014"),"Description for Property P014")
+                Core.Property.CreateWithDescription(new PropertyReference("P010"),"Description for Property P010"),
+                Core.Property.CreateWithDescription(new PropertyReference("P011"),"Description for Property P011"),
+                Core.Property.CreateWithDescription(new PropertyReference("P012"),"Description for Property P012"),
+                Core.Property.CreateWithDescription(new PropertyReference("P013"),"Description for Property P013"),
+                Core.Property.CreateWithDescription(new PropertyReference("P014"),"Description for Property P014")
             };
         }
     }
